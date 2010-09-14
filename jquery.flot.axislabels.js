@@ -1,6 +1,7 @@
 /*
 Axis Labels Plugin for flot. :P
 Released under the GPLv3 license by Xuan Luo, September 2010.
+Minor updates by Michael Lucero, September 2010
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
