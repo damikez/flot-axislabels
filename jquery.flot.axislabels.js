@@ -92,11 +92,16 @@ Released under the GPLv3 license by Xuan Luo, September 2010.
                         var width = ctx.measureText(opts.axisLabel).width;
                         var height = opts.axisLabelFontSizePixels;
                         var x, y;
+                        var yAdjustment;
+
+                        // the 'y, g, p, etc.' tails are getting cut off, we need to adjust the y coordinate by 20%
+                        yAdjustment = opts.axisLabelFontSizePixels * 0.2;
                         if (axisName.charAt(0) == 'x') {
                             x = plot.getPlotOffset().left + plot.width()/2 - width/2;
-                            y = plot.getCanvas().height;
+                            y = plot.getCanvas().height - yAdjustment;
                         } else {
-                            x = -(plot.getPlotOffset().top + plot.height()/2 - width/2);
+                            // x should be (+ width/2) not (- width/2)
+                            x = -(plot.getPlotOffset().top + plot.height()/2 + (width/2));
                             y = height * 0.72;
                         }
                         ctx.rotate((axisName.charAt(0) == 'x') ? 0 : -Math.PI/2);
