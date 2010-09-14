@@ -29,6 +29,18 @@ Minor updates by Michael Lucero, September 2010
         // Therefore, we use a trick where we run the draw routine twice:
         // the first time to get the tick measurements, so that we can change
         // them, and then have it draw it again.
+(function ($) {
+    var options = { };
+
+    function init(plot) {
+        // This is kind of a hack. There are no hooks in Flot between
+        // the creation and measuring of the ticks (setTicks, measureTickLabels
+        // in setupGrid() ) and the drawing of the ticks and plot box
+        // (insertAxisLabels in setupGrid() ).
+        //
+        // Therefore, we use a trick where we run the draw routine twice:
+        // the first time to get the tick measurements, so that we can change
+        // them, and then have it draw it again.
         var secondPass = false;
         plot.hooks.draw.push(function (plot, ctx) {
             if (!secondPass) {
@@ -94,18 +106,24 @@ Minor updates by Michael Lucero, September 2010
                         var height = opts.axisLabelFontSizePixels;
                         var x, y;
                         var yAdjustment;
-
+                        var fontColor = "#000000"; // black!
+                        
+                        if (opts.axisLabelFontColor) {
+                        	fontColor = opts.axisLabelFontColor; 
+                        }
+                        
                         // the 'y, g, p, etc.' tails are getting cut off, we need to adjust the y coordinate by 20%
                         yAdjustment = opts.axisLabelFontSizePixels * 0.2;
                         if (axisName.charAt(0) == 'x') {
                             x = plot.getPlotOffset().left + plot.width()/2 - width/2;
+                            // adjust the y coordinate
                             y = plot.getCanvas().height - yAdjustment;
                         } else {
-                            // x should be (+ width/2) not (- width/2)
                             x = -(plot.getPlotOffset().top + plot.height()/2 + (width/2));
                             y = height * 0.72;
                         }
                         ctx.rotate((axisName.charAt(0) == 'x') ? 0 : -Math.PI/2);
+                        ctx.fillStyle = opts.axisLabelFontColor;
                         ctx.fillText(opts.axisLabel, x, y);
                         ctx.restore();
 
